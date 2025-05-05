@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSN Emoticon Rain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        /* Custom CSS for the rain effect and MSN styling */
+        #emoticon-rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to pass through */
+            z-index: 1000; /* Ensure it's above everything else */
+            overflow: hidden;
+        }
+        .rain-drop {
+            position: absolute;
+            font-size: 24px;
+            /* No animation here, GSAP will handle it */
+            transform-origin: bottom;
+            pointer-events: none; /* So the rain doesn't interfere with clicks */
+        }
+        .emoticon-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 1rem 0;
+            margin-bottom: 2rem; /* Add margin to the bottom */
+        }
+
+        .emoticon-scroll {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+            padding: 0 1rem; /* Add some padding to the start and end */
+        }
+
+        .emoticon-item {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            width: 5rem; /* Increased width of each item */
+            height: 5rem; /* Increased height of each item */
+            font-size: 2rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, font-size 0.2s ease-in-out;
+            scroll-snap-align: center;
+            user-select: none; /* Prevent text selection */
+        }
+
+        .emoticon-item:hover {
+            transform: scale(1.2);
+            /* Removed background color change on hover */
+        }
+
+        .emoticon-item.active {
+            font-size: 4rem;
+            transform: scale(1.4); /* Slightly larger than hover */
+            /* Removed background color for active as well */
+        }
+
+        /* Hide scrollbar, but allow scrolling */
+        .emoticon-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .emoticon-scroll {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        #raining-emoticon {
+            font-size: 6rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            user-select: none;
+        }
+
+        #raining-emoticon:hover {
+            transform: scale(1.2);
+        }
+
+    </style>
+</head>
+<body class="bg-blue-100 font-sans">
+    <div id="emoticon-rain-container"></div>
+
+    <div class="container mx-auto text-center p-4">
+        <h1 class="text-3xl font-['Press_Start_2P'] mb-4 text-blue-600">MSN Emoticon Rain</h1>
+
+        <div class="emoticon-container">
+            <div class="emoticon-scroll">
+                <div class="emoticon-item" data-emoticon="😊">😊</div>
+                <div class="emoticon-item" data-emoticon="😂">😂</div>
+                <div class="emoticon-item" data-emoticon="😍">😍</div>
+                <div class="emoticon-item" data-emoticon="😎">😎</div>
+                <div class="emoticon-item" data-emoticon="🔥">🔥</div>
+                <div class="emoticon-item" data-emoticon="🎉">🎉</div>
+                <div class="emoticon-item" data-emoticon="🍕">🍕</div>
+                <div class="emoticon-item" data-emoticon="🎸">🎸</div>
+                <div class="emoticon-item" data-emoticon="🚀">🚀</div>
+                <div class="emoticon-item" data-emoticon="🌟">🌟</div>
+                <div class="emoticon-item" data-emoticon="🎶">🎶</div>
+                <div class="emoticon-item" data-emoticon="☕">☕</div>
+            </div>
+        </div>
+
+        <div id="raining-emoticon" class="text-6xl m-8">😊</div>
+        <p class="text-gray-600 text-lg">Click the big emoticon to make it rain!</p>
+    </div>
+
+    <script>
+        const emoticons = document.querySelectorAll('.emoticon-item');
+        const rainingEmoticonDisplay = document.getElementById('raining-emoticon');
+        const rainContainer = document.getElementById('emoticon-rain-container');
+
+        let activeEmoticon = '😊';
+
+        emoticons.forEach(emoticon => {
+            emoticon.addEventListener('click', () => {
+                activeEmoticon = emoticon.dataset.emoticon;
+                rainingEmoticonDisplay.textContent = activeEmoticon;
+                emoticons.forEach(e => e.classList.remove('active'));
+                emoticon.classList.add('active');
+            });
+        });
+
+        // Initialize the first emoticon as active
+        emoticons[0].classList.add('active');
+        rainingEmoticonDisplay.textContent = activeEmoticon;
+
+        rainingEmoticonDisplay.addEventListener('click', () => {
+            startRain();
+        });
+
+        const availableEmoticons = ['😊', '😂', '😍', '😎', '🔥', '🎉', '🍕', '🎸', '🚀', '🌟', '🎶', '☕'];
+
+        function getRandomEmoticon() {
+            return availableEmoticons[Math.floor(Math.random() * availableEmoticons.length)];
+        }
+
+        function startRain() {
+            const numDrops = 50; // Increased number of drops for more intense rain
+            const baseSize = 24; // Base size of the emoji
+            const variance = 12;    // Maximum size variation
+
+            for (let i = 0; i < numDrops; i++) {
+                const drop = document.createElement('div');
+                drop.classList.add('rain-drop');
+                const randomEmoticon = getRandomEmoticon(); // Get random emoticon
+                drop.textContent = randomEmoticon;
+                drop.style.left = `${Math.random() * 100}vw`;
+                drop.style.top = `${Math.random() * 100 - 100}vh`; // Start above the viewport
+                const size = baseSize + Math.random() * variance;
+                drop.style.fontSize = `${size}px`;
+                const duration = Math.random() * 1 + 0.8; // Shortened for more intense rain
+                drop.style.animationDuration = `${duration}s`;
+                drop.style.opacity = Math.random() * 0.8 + 0.6; // Varying opacity
+                drop.style.transform = `scale(${size / baseSize})`; // Scale relative to base size
+                rainContainer.appendChild(drop);
+
+                // GSAP Float and Effects
+                gsap.to(drop, {
+                    y: window.innerHeight,
+                    duration: duration,
+                    ease: 'linear',
+                    onComplete: () => {
+                        drop.remove();
+                    },
+                    onStart: () => { // Add onStart to apply initial random styles
+                        gsap.set(drop, {
+                            x: Math.random() * window.innerWidth,
+                            rotation: Math.random() * 360,
+                        });
+                    },
+                    repeat: 0, // No repeat,
+                    delay: 0
+                });
+
+                // Apply different effects based on the random emoticon
+                switch (randomEmoticon) {
+                    case '🔥':
+                        gsap.to(drop, { scale: size/baseSize * 1.4, color: 'red', duration: duration/2, yoyo: true, repeat: -1});
+                        break;
+                    case '🎉':
+                        gsap.to(drop, { rotation: 720, duration: duration, ease: 'easeOut' });
+                        break;
+                    case '🍕':
+                        gsap.to(drop, { x: '+=50', y: '-=50', duration: duration/3, yoyo: true, repeat: -1,  });
+                        break;
+                    case '🎸':
+                        gsap.to(drop, { scaleX: 1.5, scaleY: 0.7, duration: duration/4, yoyo: true, repeat: -1 });
+                        break;
+                    case '🚀':
+                        gsap.to(drop, { y: '-=20', duration: duration/5, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+                        break;
+                    case '🌟':
+                        gsap.to(drop, { opacity: 0.2, duration: duration/3, yoyo: true, repeat: -1 });
+                        break;
+                    case '🎶':
+                         gsap.to(drop, { x: '+=10', y: '-=10', duration: duration/4, yoyo: true, repeat: -1,  });
+                         break;
+                    case '☕':
+                         gsap.to(drop, { rotation: 360, duration: duration, ease: 'power1.inOut' });
+                         break;
+                    default:
+                        gsap.to(drop, { x: '+=20', y: '+=20', duration: duration/2, yoyo: true, repeat: -1 }); // A default movement
+                }
+            }
+        }
+    </script>
+</body>
+</html>

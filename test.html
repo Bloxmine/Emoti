@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frutiger Aero Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <style>
+        /* Custom CSS for Frutiger Aero Effects (beyond Tailwind) */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e0f7fa;
+            color: #0c3042;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #top-info {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        #top-info h1 {
+            font-size: 3.2em;
+            font-weight: 800;
+            color: #00695c;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        #top-info p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #0c3042;
+            margin-bottom: 25px;
+        }
+        #app-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px; /* Use a single gap value for both rows and columns */
+            padding: 20px;
+        }
+
+        .app-icon {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 22px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+        .app-icon:hover {
+            transform: translateY(-8px) scale(1.06);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        .app-icon img {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+                        inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+            background-image: linear-gradient(to bottom,
+                            rgba(255, 255, 255, 0.3) 0%,
+                            rgba(255, 255, 255, 0.1) 30%,
+                            rgba(0, 0, 0, 0.05) 100%);
+        }
+        .app-icon h2 {
+            font-size: 1.3em;
+            color: #004d40;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+        .app-icon p {
+            font-size: 0.95em;
+            color: #0c3042;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            #app-grid {
+                grid-template-columns: 1fr;
+            }
+            #top-info h1 {
+                font-size: 2.5em;
+            }
+            #top-info p {
+                font-size: 1em;
+            }
+            .app-icon {
+                padding: 15px;
+                width: 100px;
+                height: 100px;
+            }
+            .app-icon img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1.5s ease forwards;
+        }
+        .slide-in-left {
+            transform: translateX(-50px);
+            animation: slideInLeft 1s ease forwards;
+        }
+        .slide-in-right {
+            transform: translateX(50px);
+            animation: slideInRight 1s ease forwards;
+        }
+        .scale-up {
+            transform: scale(0.8);
+            animation: scaleUp 1s ease forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes scaleUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-teal-100 to-cyan-100">
+    <div class="container">
+        <div id="top-info" class="fade-in">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-teal-800 mb-4">Welcome to the 2000s!</h1>
+            <p class="text-gray-700 mb-6 text-lg">A nostalgic journey back to the era of Frutiger Aero.  Experience the glossy icons, vibrant colors, and user-friendly design that defined the early 2000s web.</p>
+            <a href="#" class="inline-block bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:scale-105">
+                Learn More
+            </a>
+        </div>
+        <div id="app-grid" class="mt-8">
+            <div class="app-icon slide-in-left">
+                <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/globe.svg" alt="Web Icon">
+            </div>
+            <div class="app-icon slide-in-right">
+                <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/camera.svg" alt="Photography Icon">
+            </div>
+            <div class="app-icon scale-up">
+                <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/music.svg" alt="Music Icon">
+            </div>
+            <div class="app-icon slide-in-left">
+                <img src="https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/video.svg" alt="Video Icon">
+            </div>
+        </div>
+    </div>
+    <script>
+        // GSAP Animations
+        gsap.from("#top-info", { opacity: 0, y: -20, duration: 1, ease: "easeInOut" });
+        gsap.from(".app-icon", {
+            opacity: 0,
+            y: 20,
+            stagger: 0.2,
+            duration: 1,
+            ease: "easeInOut",
+            delay: 0.5
+        });
+        // More subtle hover effect using GSAP
+        gsap.utils.toArray(".app-icon").forEach(icon => {
+            gsap.to(icon, {
+                scale: 1.04,
+                y: -6,
+                duration: 0.2,
+                ease: "easeInOut",
+                paused: true,
+                onStart: function() {
+                    gsap.to(this.targets()[0], {
+                        boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+                        duration: 0.2
+                    });
+                },
+                onReverseComplete: function() {
+                    gsap.to(this.targets()[0], {
+                        boxShadow: "0 6px 15px rgba(0,0,0,0.1)",
+                        duration: 0.2
+                    });
+                }
+            });
+            icon.addEventListener("mouseenter", function() {
+                gsap.get(this).play();
+            });
+            icon.addEventListener("mouseleave", function() {
+                gsap.get(this).reverse();
+            });
+        });
+    </script>
+</body>
+</html>
